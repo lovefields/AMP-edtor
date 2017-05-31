@@ -6,7 +6,10 @@ Just I want create web editor for developer.
 ```
 var editor = new dEditor();
 ```
-
+or
+```
+var editor = new dEditor('selector');
+```
 ## support
 
 we not support 'Internet Explorer'.

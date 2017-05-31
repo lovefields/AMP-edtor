@@ -5,9 +5,9 @@
 .d-editor-area ol,.d-editor-area ul,.d-editor-area li{list-style:none}
 .d-editor-area h1,.d-editor-area h2,.d-editor-area h3,.d-editor-area h4,.d-editor-area h5,.d-editor-area h6{font-size:1em;font-weight:normal}
 .d-editor-area,.d-editor-area input,.d-editor-area textarea,.d-editor-area keygen,.d-editor-area select,.d-editor-area button{font:normal 12px/1.2 'Dotum',sans-serif}
-.d-editor-area input,.d-editor-area textarea,.d-editor-area select,.d-editor-area button{margin:0;padding:0;border-radius:0;color:.333;outline:0;vertical-align:middle}
+.d-editor-area input,.d-editor-area textarea,.d-editor-area select,.d-editor-area button{margin:0;padding:0;border-radius:0;color:#333;outline:0;vertical-align:middle}
 .d-editor-area a:link,.d-editor-area a:visited,.d-editor-area a:hover,.d-editor-area a:active{text-decoration:none}
-.d-editor-area a,.d-editor-area button,.d-editor-area input[type='submit'],.d-editor-area input[type='button'],.d-editor-area input[type='reset']{border:0;background:transparent;cursor:pointer}
+.d-editor-area a,.d-editor-area button,.d-editor-area input[type='submit'],.d-editor-area input[type='button'],.d-editor-area input[type='reset'],.d-editor-area label{border:0;background:transparent;cursor:pointer}
 .d-editor-area img{border:0;vertical-align:top}
 
 /* global */
