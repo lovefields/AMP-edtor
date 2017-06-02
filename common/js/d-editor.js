@@ -159,31 +159,7 @@ function dEditor(continer) {
 	this.item.querySelector('.d-btn-code').addEventListener('click',(e) => {
 		document.execCommand('insertHTML',true,'<pre data-lang="text"><code></code></pre><p></p>');
 	});
-/*
-var selObj = window.getSelection();
-if(selObj.anchorNode){
-   var range = selObj.getRangeAt(0),
-   p_dom = range.commonAncestorContainer;
-   var ss = {s:selObj.anchorNode,e:selObj.focusNode}, dom_chk;
-   var sel = {
-      s : { // 첫번째로 선택된
-         dom : ss.s.oo('< *')[0], // 요소 
-         offset : selObj.anchorOffset, // 요소의 커서 위치
-         prev : ss.s.previousElementSibling, // next 요소
-         next : ss.s.nextElementSibling // next 요소
-      }
-   }
-   if(sel.s.offset != selObj.focusOffset){
-      sel.e = { // 마지막으로 선택된
-         dom : ss.e.oo('< *')[0], // 요소
-         offset : selObj.focusOffset, // 요소의 커서 위치
-         prev : ss.e.previousElementSibling, // next 요소
-         next : ss.e.nextElementSibling // next 요소
-      }
-      dom_chk = ss.s == ss.e;
-   }
-}
-*/
+
 	//기본구조 유지 스크립트.
 	var keydownTimer;
 	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown',(e) => {
@@ -198,14 +174,12 @@ if(selObj.anchorNode){
 			if(html == '' || html == '<div class="d-editor-doc"></div>'){
 				this.item.querySelector('#d-editor-doc-wrap').innerHTML = '<div class="d-editor-doc"><p></p></div>';
 			}else{
+				var el = sel.focusNode;
 				var target = e.target;
-				function getChild(el){
-					//console.log(el.lastChild.constructor);
-					//console.log(el.lastChild.lastChild.lastChild.constructor == Text);
+
+				if(el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement || el.parentNode.constructor == HTMLPreElement){
+					document.execCommand('formatBlock',true,'p');
 				}
-				getChild(target);
-				//console.log(e.target.lastChild);
-				//this.item.querySelector('.d-editor-doc').innerHTML = this.item.querySelector('.d-editor-doc').innerHTML.replace('div','p');
 			}
 		},250);
 	});
