@@ -5,7 +5,7 @@ function dEditor(continer) {
 		console.warn('Please select existing element or make "#d_editor" element. [d-editor]');
 		return false;
 	}
-	var fileReader = new FileReader();
+	let sel = window.getSelection();
 
 	this.item = item;
 
@@ -40,12 +40,12 @@ function dEditor(continer) {
 	html += '</div>';
 
 	html += '<div class="d-editor-controll02">';
-	html += '<label class="d-btn d-btn-link" title="link" data-tag="p,li,a">link <input type="text"></label>';
-	html += '<label class="d-btn d-btn-w" title="width" data-tag="img,table">width <input type="number"></label>';
-	html += '<label class="d-btn d-btn-h" title="height" data-tag="img">height <input type="number"></label>';
+	html += '<label class="d-btn d-btn-link" title="link" data-tag="*">link <input type="text"></label>';
+	html += '<label class="d-btn d-btn-max-w" title="width" data-tag="table">max-width <input type="number"></label>';
+	html += '<label class="d-btn d-btn-min-w" title="width" data-tag="table">min-width <input type="number"></label>';
 	html += '<label class="d-btn d-btn-col" title="col" data-tag="table">col <input type="number"></label>';
 	html += '<label class="d-btn d-btn-row" title="row" data-tag="table">row <input type="number"></label>';
-	html += '<label class="d-btn d-btn-row" title="Language" data-tag="pre,code">Language';
+	html += '<label class="d-btn d-btn-lang" title="Language" data-tag="pre,code">Language';
 	html += '<select>';
 	html += '<option value="text">text</option>';
 	html += '<option value="html">html</option>';
@@ -70,54 +70,138 @@ function dEditor(continer) {
 	this.addBTN = function (element) {
 		var reg = element.match(tagREG).length;
 		if(reg%2 == 0){
-			this.item.querySelector('.d-editor-controll01 .d-btn:first-child').insertAdjacentHTML('beforebegin', element);;
+			this.item.querySelector('.d-editor-controll01 .d-btn:first-of-type').insertAdjacentHTML('beforebegin', element);
 		}else{
 			console.warn('Please using HTMLString');
 		}
 	}
 
 	// 속성 컨트롤러 추가
-	this.addAttr = function(tag,string){
-
+	this.addAttr = function(element){
+		var reg = element.match(tagREG).length;
+		if(reg%2 == 0){
+			this.item.querySelector('.d-editor-controll02 *:first-child').insertAdjacentHTML('beforebegin', element);
+		}else{
+			console.warn('Please using HTMLString');
+		}
 	}
 
 	//내용 삽입
 	this.addText = function (string) {
 		var reg = string.match(tagREG);
 		if(reg == null || reg.length%2 == 0){
-			this.item.querySelector('.d-editor-doc').innerHTML += '<p>' + string + '</p>';
+			this.item.querySelector('.d-editor-doc').innerHTML += '<p>' + string + '</p><p></p>';
 		}else{
 			console.warn('Please using HTMLString or String');
 		}
 	}
 
+	// 값 추출
 	this.submit = function(){
 		var text = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
 		this.item.querySelector('#d-editor-doc-val').value = text;
 	}
 
 	/* 동작 */
+	// 볼드
+	this.item.querySelector('.d-btn-b').addEventListener('click',() => {
+		document.execCommand('bold',true,null);
+	});
+
+	// 이텔릭
+	this.item.querySelector('.d-btn-i').addEventListener('click',() => {
+		document.execCommand('italic',true,null);
+	});
+
+	// 밑줄
+	this.item.querySelector('.d-btn-u').addEventListener('click',() => {
+		document.execCommand('underline',true,null);
+	});
+
+	// 왼쪽 정렬
+	this.item.querySelector('.d-btn-align-left').addEventListener('click',() => {
+		var el = sel.focusNode.parentNode;
+		if(el.className !== 'd-editor-doc'){
+			el.className = '';
+			el.classList.add('text-align-left');
+		}
+	});
+
+	// 가운데 정렬
+	this.item.querySelector('.d-btn-align-center').addEventListener('click',() => {
+		var el = sel.focusNode.parentNode;
+		if(el.className !== 'd-editor-doc'){
+			el.className = '';
+			el.classList.add('text-align-center');
+		}
+	});
+
+	// 왼쪽 정렬
+	this.item.querySelector('.d-btn-align-right').addEventListener('click',() => {
+		var el = sel.focusNode.parentNode;
+		if(el.className !== 'd-editor-doc'){
+			el.className = '';
+			el.classList.add('text-align-right');
+		}
+	});
+
+	// 순서없는 리스트 추가
 	this.item.querySelector('.d-btn-list01').addEventListener('click',() => {
-		this.item.querySelector('.d-editor-doc').innerHTML += '<ul><li></li></ul><p></p>';
+		document.execCommand('insertHTML',true,'<ul><li></li></ul><p></p>');
 	});
 
+	// 순서있는 리스트 추가
 	this.item.querySelector('.d-btn-list02').addEventListener('click',() => {
-		this.item.querySelector('.d-editor-doc').innerHTML += '<ol><li></li></ol><p></p>';
+		document.execCommand('insertHTML',true,'<ol><li></li></ol><p></p>');
 	});
 
+	// 코드블럭 추가
+	this.item.querySelector('.d-btn-code').addEventListener('click',(e) => {
+		document.execCommand('insertHTML',true,'<pre data-lang="text"><code></code></pre><p></p>');
+	});
+/*
+var selObj = window.getSelection();
+if(selObj.anchorNode){
+   var range = selObj.getRangeAt(0),
+   p_dom = range.commonAncestorContainer;
+   var ss = {s:selObj.anchorNode,e:selObj.focusNode}, dom_chk;
+   var sel = {
+      s : { // 첫번째로 선택된
+         dom : ss.s.oo('< *')[0], // 요소 
+         offset : selObj.anchorOffset, // 요소의 커서 위치
+         prev : ss.s.previousElementSibling, // next 요소
+         next : ss.s.nextElementSibling // next 요소
+      }
+   }
+   if(sel.s.offset != selObj.focusOffset){
+      sel.e = { // 마지막으로 선택된
+         dom : ss.e.oo('< *')[0], // 요소
+         offset : selObj.focusOffset, // 요소의 커서 위치
+         prev : ss.e.previousElementSibling, // next 요소
+         next : ss.e.nextElementSibling // next 요소
+      }
+      dom_chk = ss.s == ss.e;
+   }
+}
+*/
 	//기본구조 유지 스크립트.
 	var keydownTimer;
 	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown',(e) => {
+		var key = e.key;
+		if(key == 'Tab'){
+			e.preventDefault();
+			document.execCommand('insertText',true,'    ');
+		}
 		clearTimeout(keydownTimer);
 		keydownTimer = setTimeout(() => {
 			var html = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
-			if(html == ''){
+			if(html == '' || html == '<div class="d-editor-doc"></div>'){
 				this.item.querySelector('#d-editor-doc-wrap').innerHTML = '<div class="d-editor-doc"><p></p></div>';
 			}else{
 				var target = e.target;
 				function getChild(el){
-					console.log(el.lastChild.constructor);
-					console.log(el.lastChild.lastChild.lastChild.constructor == Text);
+					//console.log(el.lastChild.constructor);
+					//console.log(el.lastChild.lastChild.lastChild.constructor == Text);
 				}
 				getChild(target);
 				//console.log(e.target.lastChild);
