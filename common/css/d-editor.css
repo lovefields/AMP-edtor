@@ -54,7 +54,8 @@
 .d-editor-area .d-btn span{font-size:14px}
 .d-editor-area .d-editor-controll01 .d-btn{width:24px;height:24px;margin:0 2px;padding:1px;border:1px solid #ccc;border-radius:5px;background:#fff;box-sizing:border-box}
 .d-editor-area .d-editor-controll01 .d-btn-select{margin:0 2px}
-.d-editor-area .d-editor-controll02 label{line-height:20px}
+.d-editor-area .d-editor-controll02 label{display:none;line-height:20px}
+.d-editor-area .d-editor-controll02 label.act{display:block}
 .d-editor-area .d-editor-controll02 input,
 .d-editor-area .d-editor-controll02 select{width:100%;height:20px;padding:0 5px;border:1px solid #ccc;line-height:20px;box-sizing:border-box}
 
@@ -80,4 +81,7 @@
 .d-editor-doc .h4{font-size:1.33em}
 .d-editor-doc .h5{font-size:0.83em}
 .d-editor-doc .h6{font-size:0.67em}
+.d-editor-doc table{min-width:100%}
+.d-editor-doc table td,
+.d-editor-doc table th{border:1px solid #ccc}
 .d-editor-doc .d-red{color:#ff0000}

@@ -41,7 +41,7 @@ function dEditor(continer) {
 	html += '</div>';
 
 	html += '<div class="d-editor-controll02">';
-	html += '<label class="d-btn d-btn-link" title="link" data-tag="*">link <input type="text"></label>';
+	html += '<label class="d-btn d-btn-link act" title="link" data-tag="*">link <input type="text"></label>';
 	html += '<label class="d-btn d-btn-max-w" title="width" data-tag="table">max-width <input type="number"></label>';
 	html += '<label class="d-btn d-btn-min-w" title="width" data-tag="table">min-width <input type="number"></label>';
 	html += '<label class="d-btn d-btn-col" title="col" data-tag="table">col <input type="number"></label>';
@@ -72,6 +72,9 @@ function dEditor(continer) {
 	html += '</div>';
 	html += '</div>';
 	this.item.innerHTML = html;
+
+	// 선택자
+	this.doc = this.item.querySelector('.d-editor-doc');
 
 	/* 함수 */
 	// 버튼 컨트롤러 추가
@@ -113,14 +116,27 @@ function dEditor(continer) {
 		this.item.querySelector('.d-btn-color').innerHTML = html;
 	}
 
+	// 컬러 설정
+	this.setBg = function (options) {
+		var html = '<option value="none">none</option>';
+		options.forEach((e) => {
+			html += '<option value="' + e.class + '">' + e.name + '</option>';
+		});
+		this.item.querySelector('.d-btn-bg').innerHTML = html;
+	}
+
+	// 현재 노드에 따른 속성
+	this.checkDoc = function(){
+		var el = sel.focusNode.parentElement;
+		if (el.className !== 'd-editor-doc') {
+			console.log(el);
+		}
+	}
+
 	// 값 추출
 	this.submit = function () {
 		var text = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
 		this.item.querySelector('#d-editor-doc-val').value = text;
-	}
-
-	function focus() {
-		console.log();
 	}
 
 	/* 동작 */
@@ -181,6 +197,11 @@ function dEditor(continer) {
 		document.execCommand('insertHTML', true, '<pre data-lang="text"><code></code></pre>');
 	});
 
+	// 테이블 추가
+	this.item.querySelector('.d-btn-table').addEventListener('click', () => {
+		document.execCommand('insertHTML', true, '<table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>');
+	});
+
 	// 폰트크기 설정
 	this.item.querySelector('.d-btn-size').addEventListener('change', () => {
 		var val = this.item.querySelector('.d-btn-size').value;
@@ -196,23 +217,56 @@ function dEditor(continer) {
 					}
 				}
 			}
-		} else {
+		} else if(sel.baseOffset > sel.focusOffset) {
 			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
+		} else if(sel.baseOffset < sel.focusOffset){
+			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
 		}
 	});
 
-	// 속성 구분
-	this.item.querySelector('.d-editor-doc').addEventListener('focus', (e) => {
-		console.log(e);
+	// 폰트색상 설정
+	this.item.querySelector('.d-btn-color').addEventListener('change', () => {
+		var val = this.item.querySelector('.d-btn-color').value;
+		var el = sel.focusNode.parentNode;
+		if (sel.baseOffset == sel.focusOffset) {
+			if (el.className !== 'd-editor-doc') {
+				var elClass = el.classList;
+				for(var i = 0,num = elClass.length;i < num;i += 1){
+					el.classList.remove(elClass[i].match(/d-color-[^]*/i));
+				}
+				if (val !== 'default') {
+					el.classList.add(val);
+				} else {
+					if (el.constructor == HTMLSpanElement) {
+						el.parentNode.innerHTML = el.parentNode.textContent;
+					}
+				}
+			}
+		} else if(sel.baseOffset > sel.focusOffset) {
+			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
+		} else if(sel.baseOffset < sel.focusOffset){
+			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
+		}
+	});
+
+	this.doc.addEventListener('click',() => {
+		this.checkDoc();
 	});
 
 	var keydownTimer;
-	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown', (e) => {
+	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keypress', (e) => {
 		var key = e.key;
+		var elNode = sel.focusNode.parentNode.parentNode;
 		if (key == 'Tab') {
 			e.preventDefault();
 			document.execCommand('insertText', true, '    ');
+		}else if(key == 'Enter' && e.shiftKey == false){ // pre 엔터 방지
+			if(elNode.constructor == HTMLPreElement){
+				e.preventDefault();
+				document.execCommand('insertHTML', true, '<p></p>');
+			}
 		}
+		this.checkDoc();
 
 		clearTimeout(keydownTimer);
 		keydownTimer = setTimeout(() => {
@@ -223,7 +277,7 @@ function dEditor(continer) {
 			} else {
 				var el = sel.focusNode;
 
-				if (el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement || el.parentNode.constructor == HTMLPreElement) {
+				if (el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement) {
 					document.execCommand('formatBlock', true, 'p');
 				}
 			}
