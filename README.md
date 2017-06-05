@@ -12,4 +12,4 @@ var editor = new dEditor('selector');
 ```
 ## support
 
-we not support 'Internet Explorer'.
+we only support 'chrome'.

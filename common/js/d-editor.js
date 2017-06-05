@@ -13,6 +13,7 @@ function dEditor(continer) {
 	html += '<p hidden>This area is developer editor area</p>';
 	html += '<div class="d-editor-controll01">';
 	html += '<select class="d-btn-select d-btn-size" title="font-size">';
+	html += '<option value="default">default</option>';
 	html += '<option value="h6">h6</option>';
 	html += '<option value="h5">h5</option>';
 	html += '<option value="h4">h4</option>';
@@ -62,6 +63,13 @@ function dEditor(continer) {
 	html += '<textarea name="d-editor-doc-val" id="d-editor-doc-val" hidden></textarea>';
 	html += '<div id="d-editor-doc-wrap" contenteditable="true"><div class="d-editor-doc"><p></p></div></div>';
 	html += '</div>';
+	html += '<div class="d-pop">';
+	html += '<div class="d-pop-help">';
+	html += '<p>작성법</p>';
+	html += '<p>리스트를 추가한후에 엔터를 두번치면 다음 리스트로 넘어가지 않습니다.</p>';
+	html += '<p>코드블럭 안에서는 Shift + Enter 으로 줄바꿈을 해야합니다.</p>';
+	html += '</div>';
+	html += '</div>';
 	html += '</div>';
 	this.item.innerHTML = html;
 
@@ -69,118 +77,156 @@ function dEditor(continer) {
 	// 버튼 컨트롤러 추가
 	this.addBTN = function (element) {
 		var reg = element.match(tagREG).length;
-		if(reg%2 == 0){
+		if (reg % 2 == 0) {
 			this.item.querySelector('.d-editor-controll01 .d-btn:first-of-type').insertAdjacentHTML('beforebegin', element);
-		}else{
+		} else {
 			console.warn('Please using HTMLString');
 		}
 	}
 
 	// 속성 컨트롤러 추가
-	this.addAttr = function(element){
+	this.addAttr = function (element) {
 		var reg = element.match(tagREG).length;
-		if(reg%2 == 0){
+		if (reg % 2 == 0) {
 			this.item.querySelector('.d-editor-controll02 *:first-child').insertAdjacentHTML('beforebegin', element);
-		}else{
+		} else {
 			console.warn('Please using HTMLString');
 		}
 	}
 
-	//내용 삽입
+	// 내용 삽입
 	this.addText = function (string) {
 		var reg = string.match(tagREG);
-		if(reg == null || reg.length%2 == 0){
-			this.item.querySelector('.d-editor-doc').innerHTML += '<p>' + string + '</p><p></p>';
-		}else{
+		if (reg == null || reg.length % 2 == 0) {
+			this.item.querySelector('.d-editor-doc').innerHTML += '<p>' + string + '</p>';
+		} else {
 			console.warn('Please using HTMLString or String');
 		}
 	}
 
+	// 컬러 설정
+	this.setColor = function (options) {
+		var html = '<option value="default">default</option>';
+		options.forEach((e) => {
+			html += '<option value="' + e.class + '">' + e.name + '</option>';
+		});
+		this.item.querySelector('.d-btn-color').innerHTML = html;
+	}
+
 	// 값 추출
-	this.submit = function(){
+	this.submit = function () {
 		var text = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
 		this.item.querySelector('#d-editor-doc-val').value = text;
 	}
 
+	function focus() {
+		console.log();
+	}
+
 	/* 동작 */
 	// 볼드
-	this.item.querySelector('.d-btn-b').addEventListener('click',() => {
-		document.execCommand('bold',true,null);
+	this.item.querySelector('.d-btn-b').addEventListener('click', () => {
+		document.execCommand('bold', true, null);
 	});
 
 	// 이텔릭
-	this.item.querySelector('.d-btn-i').addEventListener('click',() => {
-		document.execCommand('italic',true,null);
+	this.item.querySelector('.d-btn-i').addEventListener('click', () => {
+		document.execCommand('italic', true, null);
 	});
 
 	// 밑줄
-	this.item.querySelector('.d-btn-u').addEventListener('click',() => {
-		document.execCommand('underline',true,null);
+	this.item.querySelector('.d-btn-u').addEventListener('click', () => {
+		document.execCommand('underline', true, null);
 	});
 
 	// 왼쪽 정렬
-	this.item.querySelector('.d-btn-align-left').addEventListener('click',() => {
+	this.item.querySelector('.d-btn-align-left').addEventListener('click', () => {
 		var el = sel.focusNode.parentNode;
-		if(el.className !== 'd-editor-doc'){
-			el.className = '';
+		if (el.className !== 'd-editor-doc') {
+			el.classList.remove('text-align-center', 'text-align-right');
 			el.classList.add('text-align-left');
 		}
 	});
 
 	// 가운데 정렬
-	this.item.querySelector('.d-btn-align-center').addEventListener('click',() => {
+	this.item.querySelector('.d-btn-align-center').addEventListener('click', () => {
 		var el = sel.focusNode.parentNode;
-		if(el.className !== 'd-editor-doc'){
-			el.className = '';
+		if (el.className !== 'd-editor-doc') {
+			el.classList.remove('text-align-right', 'text-align-left');
 			el.classList.add('text-align-center');
 		}
 	});
 
 	// 왼쪽 정렬
-	this.item.querySelector('.d-btn-align-right').addEventListener('click',() => {
+	this.item.querySelector('.d-btn-align-right').addEventListener('click', () => {
 		var el = sel.focusNode.parentNode;
-		if(el.className !== 'd-editor-doc'){
-			el.className = '';
+		if (el.className !== 'd-editor-doc') {
+			el.classList.remove('text-align-center', 'text-align-left');
 			el.classList.add('text-align-right');
 		}
 	});
 
 	// 순서없는 리스트 추가
-	this.item.querySelector('.d-btn-list01').addEventListener('click',() => {
-		document.execCommand('insertHTML',true,'<ul><li></li></ul><p></p>');
+	this.item.querySelector('.d-btn-list01').addEventListener('click', () => {
+		document.execCommand('insertHTML', true, '<ul><li></li></ul>');
 	});
 
 	// 순서있는 리스트 추가
-	this.item.querySelector('.d-btn-list02').addEventListener('click',() => {
-		document.execCommand('insertHTML',true,'<ol><li></li></ol><p></p>');
+	this.item.querySelector('.d-btn-list02').addEventListener('click', () => {
+		document.execCommand('insertHTML', true, '<ol><li></li></ol>');
 	});
 
 	// 코드블럭 추가
-	this.item.querySelector('.d-btn-code').addEventListener('click',(e) => {
-		document.execCommand('insertHTML',true,'<pre data-lang="text"><code></code></pre><p></p>');
+	this.item.querySelector('.d-btn-code').addEventListener('click', () => {
+		document.execCommand('insertHTML', true, '<pre data-lang="text"><code></code></pre>');
 	});
 
-	//기본구조 유지 스크립트.
-	var keydownTimer;
-	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown',(e) => {
-		var key = e.key;
-		if(key == 'Tab'){
-			e.preventDefault();
-			document.execCommand('insertText',true,'    ');
-		}
-		clearTimeout(keydownTimer);
-		keydownTimer = setTimeout(() => {
-			var html = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
-			if(html == '' || html == '<div class="d-editor-doc"></div>'){
-				this.item.querySelector('#d-editor-doc-wrap').innerHTML = '<div class="d-editor-doc"><p></p></div>';
-			}else{
-				var el = sel.focusNode;
-				var target = e.target;
-
-				if(el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement || el.parentNode.constructor == HTMLPreElement){
-					document.execCommand('formatBlock',true,'p');
+	// 폰트크기 설정
+	this.item.querySelector('.d-btn-size').addEventListener('change', () => {
+		var val = this.item.querySelector('.d-btn-size').value;
+		var el = sel.focusNode.parentNode;
+		if (sel.baseOffset == sel.focusOffset) {
+			if (el.className !== 'd-editor-doc') {
+				el.classList.remove('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+				if (val !== 'default') {
+					el.classList.add(val);
+				} else {
+					if (el.constructor == HTMLSpanElement) {
+						el.parentNode.innerHTML = el.parentNode.textContent;
+					}
 				}
 			}
-		},250);
+		} else {
+			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
+		}
+	});
+
+	// 속성 구분
+	this.item.querySelector('.d-editor-doc').addEventListener('focus', (e) => {
+		console.log(e);
+	});
+
+	var keydownTimer;
+	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown', (e) => {
+		var key = e.key;
+		if (key == 'Tab') {
+			e.preventDefault();
+			document.execCommand('insertText', true, '    ');
+		}
+
+		clearTimeout(keydownTimer);
+		keydownTimer = setTimeout(() => {
+			//기본구조 유지 스크립트.
+			var html = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
+			if (html == '' || html == '<div class="d-editor-doc"></div>') {
+				this.item.querySelector('#d-editor-doc-wrap').innerHTML = '<div class="d-editor-doc"><p></p></div>';
+			} else {
+				var el = sel.focusNode;
+
+				if (el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement || el.parentNode.constructor == HTMLPreElement) {
+					document.execCommand('formatBlock', true, 'p');
+				}
+			}
+		}, 250);
 	});
 }
