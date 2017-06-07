@@ -41,12 +41,12 @@ function dEditor(continer) {
 	html += '</div>';
 
 	html += '<div class="d-editor-controll02">';
-	html += '<label class="d-btn d-btn-link act" title="link" data-tag="*">link <input type="text"></label>';
+	html += '<label class="d-btn d-btn-link" title="link" data-tag="*,(pre)">link <input type="text"></label>';
 	html += '<label class="d-btn d-btn-max-w" title="width" data-tag="table">max-width <input type="number"></label>';
 	html += '<label class="d-btn d-btn-min-w" title="width" data-tag="table">min-width <input type="number"></label>';
 	html += '<label class="d-btn d-btn-col" title="col" data-tag="table">col <input type="number"></label>';
 	html += '<label class="d-btn d-btn-row" title="row" data-tag="table">row <input type="number"></label>';
-	html += '<label class="d-btn d-btn-lang" title="Language" data-tag="pre,code">Language';
+	html += '<label class="d-btn d-btn-lang" title="Language" data-tag="pre">Language';
 	html += '<select>';
 	html += '<option value="text">text</option>';
 	html += '<option value="html">html</option>';
@@ -126,17 +126,33 @@ function dEditor(continer) {
 	}
 
 	// 현재 노드에 따른 속성
-	this.checkDoc = function(){
+	this.checkDoc = function () {
 		var el = sel.focusNode.parentElement;
 		if (el.className !== 'd-editor-doc') {
-			console.log(el);
+			var attr = this.item.querySelectorAll('.d-editor-controll02 label');
+			[].forEach.call(attr,(e) => {e.classList.remove('act');});
+			console.log(el.constructor);
+			switch (el.constructor) {
+				case HTMLParagraphElement:
+					[].forEach.call(attr,(e) => {
+						if(/[*]|paragraph/i.test(e.getAttribute('data-tag'))){
+							e.classList.add('act');
+						}
+					});
+					break;
+			}
 		}
+	}
+
+	// focus
+	this.focus = function(){
+		document.getElementById('d-editor-doc-wrap').focus();
 	}
 
 	// 값 추출
 	this.submit = function () {
-		var text = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
-		this.item.querySelector('#d-editor-doc-val').value = text;
+		var text = this.item.getElementById('d-editor-doc-wrap').innerHTML;
+		this.item.getElementById('d-editor-doc-val').value = text;
 	}
 
 	/* 동작 */
@@ -185,21 +201,25 @@ function dEditor(continer) {
 	// 순서없는 리스트 추가
 	this.item.querySelector('.d-btn-list01').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<ul><li></li></ul>');
+		this.checkDoc();
 	});
 
 	// 순서있는 리스트 추가
 	this.item.querySelector('.d-btn-list02').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<ol><li></li></ol>');
+		this.checkDoc
 	});
 
 	// 코드블럭 추가
 	this.item.querySelector('.d-btn-code').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<pre data-lang="text"><code></code></pre>');
+		this.checkDoc
 	});
 
 	// 테이블 추가
 	this.item.querySelector('.d-btn-table').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>');
+		this.checkDoc
 	});
 
 	// 폰트크기 설정
@@ -209,18 +229,23 @@ function dEditor(continer) {
 		if (sel.baseOffset == sel.focusOffset) {
 			if (el.className !== 'd-editor-doc') {
 				el.classList.remove('h1', 'h2', 'h3', 'h4', 'h5', 'h6');
+				this.focus();
 				if (val !== 'default') {
 					el.classList.add(val);
+					this.focus();
 				} else {
 					if (el.constructor == HTMLSpanElement) {
 						el.parentNode.innerHTML = el.parentNode.textContent;
+						this.focus();
 					}
 				}
 			}
-		} else if(sel.baseOffset > sel.focusOffset) {
+		} else if (sel.baseOffset > sel.focusOffset) {
 			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
-		} else if(sel.baseOffset < sel.focusOffset){
+			this.focus();
+		} else if (sel.baseOffset < sel.focusOffset) {
 			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
+			this.focus();
 		}
 	});
 
@@ -231,25 +256,68 @@ function dEditor(continer) {
 		if (sel.baseOffset == sel.focusOffset) {
 			if (el.className !== 'd-editor-doc') {
 				var elClass = el.classList;
-				for(var i = 0,num = elClass.length;i < num;i += 1){
-					el.classList.remove(elClass[i].match(/d-color-[^]*/i));
+				for (var i = 0, num = elClass.length; i < num; i += 1) {
+					if(elClass[i].match(/d-color-[^]*/i)){
+						el.classList.remove(elClass[i].match(/d-color-[^]*/i));
+					}
 				}
+				this.focus();
 				if (val !== 'default') {
 					el.classList.add(val);
+					this.focus();
 				} else {
 					if (el.constructor == HTMLSpanElement) {
 						el.parentNode.innerHTML = el.parentNode.textContent;
+						this.focus();
 					}
 				}
 			}
-		} else if(sel.baseOffset > sel.focusOffset) {
+		} else if (sel.baseOffset > sel.focusOffset) {
 			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
-		} else if(sel.baseOffset < sel.focusOffset){
+			this.focus();
+		} else if (sel.baseOffset < sel.focusOffset) {
 			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
+			this.focus();
 		}
 	});
 
-	this.doc.addEventListener('click',() => {
+	// bg색상 설정
+	this.item.querySelector('.d-btn-bg').addEventListener('change', () => {
+		var val = this.item.querySelector('.d-btn-bg').value;
+		var el = sel.focusNode.parentNode;
+		if (sel.baseOffset == sel.focusOffset) {
+			if (el.className !== 'd-editor-doc') {
+				var elClass = el.classList;
+				for (var i = 0, num = elClass.length; i < num; i += 1) {
+					if(elClass[i].match(/d-bg-[^]*/i)){
+						el.classList.remove(elClass[i].match(/d-bg-[^]*/i));
+					}
+				}
+				this.focus();
+				if (val !== 'none') {
+					el.classList.add(val);
+					this.focus();
+				} else {
+					if (el.constructor == HTMLSpanElement) {
+						el.parentNode.innerHTML = el.parentNode.textContent;
+						this.focus();
+					}
+				}
+			}
+		} else if (sel.baseOffset > sel.focusOffset) {
+			el.innerHTML = el.textContent.substring(0, sel.focusOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.focusOffset, sel.baseOffset) + '</span>' + el.textContent.substring(sel.baseOffset, el.textContent.length);
+			this.focus();
+		} else if (sel.baseOffset < sel.focusOffset) {
+			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
+			this.focus();
+		}
+	});
+
+	this.doc.addEventListener('click', () => {
+		this.checkDoc();
+	});
+
+	this.doc.addEventListener('keypress', () => {
 		this.checkDoc();
 	});
 
@@ -260,8 +328,8 @@ function dEditor(continer) {
 		if (key == 'Tab') {
 			e.preventDefault();
 			document.execCommand('insertText', true, '    ');
-		}else if(key == 'Enter' && e.shiftKey == false){ // pre 엔터 방지
-			if(elNode.constructor == HTMLPreElement){
+		} else if (key == 'Enter' && e.shiftKey == false) { // pre 엔터 방지
+			if (elNode.constructor == HTMLPreElement) {
 				e.preventDefault();
 				document.execCommand('insertHTML', true, '<p></p>');
 			}
@@ -274,6 +342,7 @@ function dEditor(continer) {
 			var html = this.item.querySelector('#d-editor-doc-wrap').innerHTML;
 			if (html == '' || html == '<div class="d-editor-doc"></div>') {
 				this.item.querySelector('#d-editor-doc-wrap').innerHTML = '<div class="d-editor-doc"><p></p></div>';
+				this.focus();
 			} else {
 				var el = sel.focusNode;
 
