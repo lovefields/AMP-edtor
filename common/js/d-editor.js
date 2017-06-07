@@ -6,6 +6,7 @@ function dEditor(continer) {
 		return false;
 	}
 	let sel = window.getSelection();
+	let range = document.createRange();
 
 	this.item = item;
 
@@ -41,9 +42,7 @@ function dEditor(continer) {
 	html += '</div>';
 
 	html += '<div class="d-editor-controll02">';
-	html += '<label class="d-btn d-btn-link" title="link" data-tag="*,(pre)">link <input type="text"></label>';
-	html += '<label class="d-btn d-btn-max-w" title="width" data-tag="table">max-width <input type="number"></label>';
-	html += '<label class="d-btn d-btn-min-w" title="width" data-tag="table">min-width <input type="number"></label>';
+	html += '<label class="d-btn d-btn-link" title="link" data-tag="paragraph,ul,table">link <input type="text"></label>';
 	html += '<label class="d-btn d-btn-col" title="col" data-tag="table">col <input type="number"></label>';
 	html += '<label class="d-btn d-btn-row" title="row" data-tag="table">row <input type="number"></label>';
 	html += '<label class="d-btn d-btn-lang" title="Language" data-tag="pre">Language';
@@ -65,9 +64,9 @@ function dEditor(continer) {
 	html += '</div>';
 	html += '<div class="d-pop">';
 	html += '<div class="d-pop-help">';
-	html += '<p>작성법</p>';
+	html += '<p class="d-pop-title">작성법</p>';
 	html += '<p>리스트를 추가한후에 엔터를 두번치면 다음 리스트로 넘어가지 않습니다.</p>';
-	html += '<p>코드블럭 안에서는 Shift + Enter 으로 줄바꿈을 해야합니다.</p>';
+	html += '<p>코드블럭및 테이블 안에서는 Shift + Enter 으로 줄바꿈을 해야합니다.</p>';
 	html += '</div>';
 	html += '</div>';
 	html += '</div>';
@@ -131,16 +130,49 @@ function dEditor(continer) {
 		if (el.className !== 'd-editor-doc') {
 			var attr = this.item.querySelectorAll('.d-editor-controll02 label');
 			[].forEach.call(attr,(e) => {e.classList.remove('act');});
-			console.log(el.constructor);
-			switch (el.constructor) {
-				case HTMLParagraphElement:
-					[].forEach.call(attr,(e) => {
-						if(/[*]|paragraph/i.test(e.getAttribute('data-tag'))){
-							e.classList.add('act');
-						}
-					});
-					break;
+			var val = el.constructor;
+			if(val == HTMLElement){
+				val = el.parentNode.constructor;
 			}
+
+			switch(val){
+				case HTMLParagraphElement :
+				val = /paragraph/i;
+				break;
+				case HTMLUListElement :
+				val = /ul/i;
+				break;
+				case HTMLLIElement :
+				val = /ul/i;
+				break;
+				case HTMLPreElement :
+				val = /pre/i;
+				break;
+				case HTMLTableElement :
+				val = /table/i;
+				break;
+				case HTMLTableColElement :
+				val = /table/i;
+				break;
+				case HTMLTableRowElement :
+				val = /table/i;
+				break;
+				case HTMLTableCellElement :
+				val = /table/i;
+				break;
+				case HTMLDivElement :
+				val = /paragraph/i;
+				break;
+				case HTMLImageElement :
+				val = /img/i;
+				break;
+			}
+
+			[].forEach.call(attr,(e) => {
+				if(val.test(e.getAttribute('data-tag'))){
+					e.classList.add('act');
+				}
+			});
 		}
 	}
 
@@ -156,6 +188,14 @@ function dEditor(continer) {
 	}
 
 	/* 동작 */
+	// 도움말
+	this.item.querySelector('.d-btn-help').addEventListener('click', () => {
+		this.item.querySelector('.d-pop').classList.add('act');
+	});
+	this.item.querySelector('.d-pop').addEventListener('click', () => {
+		this.item.querySelector('.d-pop').classList.remove('act');
+	});
+
 	// 볼드
 	this.item.querySelector('.d-btn-b').addEventListener('click', () => {
 		document.execCommand('bold', true, null);
@@ -202,24 +242,28 @@ function dEditor(continer) {
 	this.item.querySelector('.d-btn-list01').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<ul><li></li></ul>');
 		this.checkDoc();
+		this.focus();
 	});
 
 	// 순서있는 리스트 추가
 	this.item.querySelector('.d-btn-list02').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<ol><li></li></ol>');
-		this.checkDoc
+		this.checkDoc();
+		this.focus();
 	});
 
 	// 코드블럭 추가
 	this.item.querySelector('.d-btn-code').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<pre data-lang="text"><code></code></pre>');
-		this.checkDoc
+		this.checkDoc();
+		this.focus();
 	});
 
 	// 테이블 추가
 	this.item.querySelector('.d-btn-table').addEventListener('click', () => {
 		document.execCommand('insertHTML', true, '<table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>');
-		this.checkDoc
+		this.checkDoc();
+		this.focus();
 	});
 
 	// 폰트크기 설정
@@ -322,16 +366,34 @@ function dEditor(continer) {
 	});
 
 	var keydownTimer;
-	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keypress', (e) => {
+	this.item.querySelector('#d-editor-doc-wrap').addEventListener('keydown', (e) => {
 		var key = e.key;
 		var elNode = sel.focusNode.parentNode.parentNode;
 		if (key == 'Tab') {
 			e.preventDefault();
 			document.execCommand('insertText', true, '    ');
-		} else if (key == 'Enter' && e.shiftKey == false) { // pre 엔터 방지
-			if (elNode.constructor == HTMLPreElement) {
+		} else if (key == 'Enter' && e.shiftKey == false) {
+			if (elNode.constructor == HTMLPreElement) { // pre 엔터 방지
 				e.preventDefault();
 				document.execCommand('insertHTML', true, '<p></p>');
+			}else if(sel.focusNode.parentNode.constructor == HTMLTableRowElement || sel.focusNode.parentNode.constructor == HTMLTableCellElement || sel.focusNode.parentNode.constructor == HTMLTableColElement){
+				e.preventDefault();
+				if(sel.focusNode.constructor == Text){
+					var table = sel.focusNode.parentNode.parentNode.parentNode.parentNode;
+				}else{
+					var table = sel.focusNode.parentNode.parentNode.parentNode;
+				}
+
+				if(table.nextSibling == null){
+					this.item.querySelector('.d-editor-doc').innerHTML += '<p></p>';
+					range.setStart(this.doc.childNodes[this.doc.childNodes.length - 1],0);
+				}else{
+					range.setStart(table.nextSibling,0);
+				}
+				range.collapse(true);
+				sel.removeAllRanges();
+				sel.addRange(range);
+				this.focus();
 			}
 		}
 		this.checkDoc();
@@ -348,6 +410,7 @@ function dEditor(continer) {
 
 				if (el.constructor == HTMLDivElement || el.parentNode.constructor == HTMLDivElement) {
 					document.execCommand('formatBlock', true, 'p');
+					this.focus();
 				}
 			}
 		}, 250);
