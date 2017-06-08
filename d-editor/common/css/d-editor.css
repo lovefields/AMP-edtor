@@ -54,6 +54,7 @@
 .d-editor-area .d-btn span.title{display:inline-block;width:100%;font-size:12px}
 .d-editor-area .d-btn button{width:60px;border:1px solid #333}
 .d-editor-area .d-btn button:last-child{margin-left:9px}
+.d-editor-area .d-btn button.d-table-done{width:100%;margin-left:0}
 .d-editor-area .d-editor-controll01 .d-btn{width:24px;height:24px;margin:0 2px;padding:1px;border:1px solid #ccc;border-radius:5px;background:#fff;box-sizing:border-box}
 .d-editor-area .d-editor-controll01 .d-btn-select{margin:0 2px}
 .d-editor-area .d-editor-controll02 label{display:none;line-height:20px}

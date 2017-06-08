@@ -43,7 +43,7 @@ function dEditor(continer) {
 	html += '<label class="d-btn d-btn-link" title="link" data-tag="paragraph,ul,table,link">link <input type="text"><button class="d-add">Add</button><button class="d-del">delete</button></label>';
 	html += '<label class="d-btn d-btn-table-type" title="table-type" data-tag="table"><span class="title">table type</span><button class="d-th">th</button><button class="d-td">td</button></label>';
 	html += '<label class="d-btn d-btn-col" title="col" data-tag="table">col <input type="number" value="1" min="1" max="10"></label>';
-	html += '<label class="d-btn d-btn-row" title="row" data-tag="table">row <input type="number" value="1" min="1"></label>';
+	html += '<label class="d-btn d-btn-row" title="row" data-tag="table">row <input type="number" value="1" min="1"><button class="d-table-done">done</button></label>';
 	html += '<label class="d-btn d-btn-lang" title="Language" data-tag="pre">Language';
 	html += '<select>';
 	html += '<option value="text">text</option>';
@@ -128,6 +128,20 @@ function dEditor(continer) {
 		this.item.querySelector('.d-btn-bg').innerHTML = html;
 	}
 
+	// table colum or ro check
+	this.tabelCheck = function(){
+		if (sel.focusNode.constructor == Text) {
+			var table = sel.focusNode.parentNode.parentNode.parentNode.parentNode;
+		} else {
+			var table = sel.focusNode.parentNode.parentNode.parentNode;
+		}
+		var col = table.querySelectorAll('tr:first-child td').length;
+		var row = table.querySelectorAll('tr').length;
+
+		this.item.querySelector('.d-btn-col input').value = col;
+		this.item.querySelector('.d-btn-row input').value = row;
+	}
+
 	// eidte node option
 	this.checkDoc = function () {
 		var el = sel.focusNode.parentElement;
@@ -167,15 +181,19 @@ function dEditor(continer) {
 					break;
 				case HTMLTableElement:
 					val = /table/i;
+					this.tabelCheck();
 					break;
 				case HTMLTableColElement:
 					val = /table/i;
+					this.tabelCheck();
 					break;
 				case HTMLTableRowElement:
 					val = /table/i;
+					this.tabelCheck();
 					break;
 				case HTMLTableCellElement:
 					val = /table/i;
+					this.tabelCheck();
 					break;
 				case HTMLDivElement:
 					val = /paragraph/i;
@@ -296,7 +314,7 @@ function dEditor(continer) {
 
 	// table
 	this.item.querySelector('.d-btn-table').addEventListener('click', () => {
-		document.execCommand('insertHTML', true, '<table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table>');
+		document.execCommand('insertHTML', true, '<table><tbody><tr><td></td></tr><tr><td></td></tr></tbody></table>');
 		this.checkDoc();
 		this.focus();
 	});
@@ -304,12 +322,24 @@ function dEditor(continer) {
 	// table type th
 	this.item.querySelector('.d-btn-table-type .d-th').addEventListener('click', () => {
 		var el = sel.focusNode;
-		console.log(el);
 		if(sel.focusNode.constructor == Text){
 			el = sel.focusNode.parentNode;
 		}
 		var val = el.textContent;
 		el.insertAdjacentHTML('afterend', '<th>'+ val +'</th>');
+		el.remove();
+		this.checkDoc();
+		this.focus();
+	});
+
+	// table type td
+	this.item.querySelector('.d-btn-table-type .d-td').addEventListener('click', () => {
+		var el = sel.focusNode;
+		if(sel.focusNode.constructor == Text){
+			el = sel.focusNode.parentNode;
+		}
+		var val = el.textContent;
+		el.insertAdjacentHTML('afterend', '<td>'+ val +'</td>');
 		el.remove();
 		this.checkDoc();
 		this.focus();
@@ -404,6 +434,13 @@ function dEditor(continer) {
 			el.innerHTML = el.textContent.substring(0, sel.baseOffset) + '<span class="' + val + '">' + el.textContent.substring(sel.baseOffset, sel.focusOffset) + '</span>' + el.textContent.substring(sel.focusOffset, el.textContent.length);
 			this.focus();
 		}
+	});
+
+	// table re write
+	this.item.querySelector('.d-btn .d-table-done').addEventListener('click', () => {
+		var col = this.item.querySelector('.d-btn-col input').value;
+		var row = this.item.querySelector('.d-btn-row input').value;
+		console.log(col,row);
 	});
 
 	this.doc.addEventListener('click', () => {
