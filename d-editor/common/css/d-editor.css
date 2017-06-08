@@ -25,12 +25,10 @@
 .icon.icon-align-center::before{content:'\e804'}
 .icon.icon-underline::before{content:'\f0cd'}
 
-
 .d-editor-area h1,.d-editor-area h2,.d-editor-area h3,.d-editor-area h4,.d-editor-area h5,.d-editor-area h6,.d-editor-area p,.d-editor-area blockquote,.d-editor-area pre,.d-editor-area dl,.d-editor-area dd,.d-editor-area ol,.d-editor-area ul,.d-editor-area iframe{margin:0;padding:0;border:0}
 .d-editor-area table,.d-editor-area th,.d-editor-area td{border-spacing:0;border-collapse:collapse}
 .d-editor-area ol,
 .d-editor-area ul{padding-left:15px}
-/* .d-editor-area li{list-style:none} */
 .d-editor-area h1,.d-editor-area h2,.d-editor-area h3,.d-editor-area h4,.d-editor-area h5,.d-editor-area h6{font-size:1em;font-weight:normal}
 .d-editor-area,.d-editor-area input,.d-editor-area textarea,.d-editor-area keygen,.d-editor-area select,.d-editor-area button{font:normal 12px/1.2 'Dotum',sans-serif}
 .d-editor-area input,.d-editor-area textarea,.d-editor-area select,.d-editor-area button{margin:0;padding:0;border-radius:0;color:#333;outline:0;vertical-align:middle}
@@ -48,11 +46,14 @@
 .d-editor-area{position:relative;width:100%;height:100%;border:1px solid #ccc;box-sizing:border-box}
 .d-editor-area .d-editor-controll01{width:100%;height:30px;background:#eee;border-bottom:1px solid #ccc;font-size:0;line-height:30px}
 .d-editor-area .d-editor-controll02{position:absolute;top:31px;right:0;bottom:0;width:150px;padding:10px;background:#eee;border-left:1px solid #ccc;font-size:0;box-sizing:border-box}
-.d-editor-area .d-editor-document{position:absolute;top:31px;left:0;right:151px;bottom:0;padding:10px;overflow-y:auto}
+.d-editor-area .d-editor-document{position:absolute;top:31px;left:0;right:151px;bottom:0}
 
 .d-editor-area .d-btn-select{display:inline-block;height:24px;padding:0 5px;font-size:12px;border:1px solid #ccc;border-radius:5px;vertical-align:middle;line-height:22px;box-sizing:border-box}
 .d-editor-area .d-btn{display:inline-block;font-size:12px;vertical-align:middle;line-height:22px}
 .d-editor-area .d-btn span{font-size:14px}
+.d-editor-area .d-btn span.title{display:inline-block;width:100%;font-size:12px}
+.d-editor-area .d-btn button{width:60px;border:1px solid #333}
+.d-editor-area .d-btn button:last-child{margin-left:9px}
 .d-editor-area .d-editor-controll01 .d-btn{width:24px;height:24px;margin:0 2px;padding:1px;border:1px solid #ccc;border-radius:5px;background:#fff;box-sizing:border-box}
 .d-editor-area .d-editor-controll01 .d-btn-select{margin:0 2px}
 .d-editor-area .d-editor-controll02 label{display:none;line-height:20px}
@@ -60,13 +61,14 @@
 .d-editor-area .d-editor-controll02 input,
 .d-editor-area .d-editor-controll02 select{width:100%;height:20px;padding:0 5px;border:1px solid #ccc;line-height:20px;box-sizing:border-box}
 
+
 /* help */
 .d-pop{display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4)}
 .d-pop.act{display:block}
 .d-pop-help{position:absolute;top:50%;left:50%;width:400px;padding:10px;background:#fff;border-radius:10px;box-sizing:border-box;transform:translate(-50%,-50%)}
 
 /* editor */
-#d-editor-doc-wrap{border:0;outline:0}
+#d-editor-doc-wrap{/* width:100%;height:100%; */padding:10px;border:0;outline:0}
 .d-editor-doc{line-height:1.5}
 .d-editor-doc p:empty,
 .d-editor-doc li:empty{min-height:18px}
@@ -85,4 +87,5 @@
 .d-editor-doc table{min-width:100%}
 .d-editor-doc table td,
 .d-editor-doc table th{border:1px solid #ccc}
+.d-editor-doc table th{background:#f1f1f1}
 .d-editor-doc .d-red{color:#ff0000}
