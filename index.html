@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<title>Developer's Editor</title>
+	<link rel="stylesheet" href="/d-editor/css/d-editor.css">
+	<style>
+		#d-editor{width:900px;height:600px}
+		.d-editor{width:900px;height:600px}
+	</style>
+</head>
+<body>
+<div class="wrap">
+	<div id="d-editor"></div>
+	<div class="d-editor"></div>
+</div>
+<script src="/d-editor/js/d-editor.js"></script>
+<script>
+window.onload = function(){
+	var editor = new dEditor();
+
+	editor.setColor([
+		{name:'red(#ff0000)',class:'d-color-red'},
+		{name:'blue(#0000ff)',class:'d-color-blue'}
+	]);
+
+	editor.setBg([
+		{name:'red(#ff0000)',class:'d-bg-red'}
+	]);
+}
+</script>
+</body>
+</html>
