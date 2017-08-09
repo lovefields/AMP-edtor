@@ -1,33 +1,316 @@
-<!doctype html>
-<html lang="ko">
-<head>
-	<meta charset="utf-8">
-	<title>Developer's Editor</title>
-	<link rel="stylesheet" href="/d-editor/css/d-editor.css">
-	<style>
-		#d-editor{width:900px;height:600px}
-		.d-editor{width:900px;height:600px}
-	</style>
-</head>
-<body>
-<div class="wrap">
-	<div id="d-editor"></div>
-	<div class="d-editor"></div>
-</div>
-<script src="/d-editor/js/d-editor.js"></script>
-<script>
-window.onload = function(){
-	var editor = new dEditor();
-
-	editor.setColor([
-		{name:'red(#ff0000)',class:'d-color-red'},
-		{name:'blue(#0000ff)',class:'d-color-blue'}
-	]);
-
-	editor.setBg([
-		{name:'red(#ff0000)',class:'d-bg-red'}
-	]);
-}
-</script>
-</body>
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="/common/css/common.css">
+
+	<title>AMP - Editor</title>
+</head>
+<body>
+<div class="wrap">
+<main class="container write">
+	<h1 hidden>컨텐츠 영역</h1>
+
+	<section>
+		<h2 hidden>본문 영역</h2>
+
+		<div class="write_area">
+			<form action="/post/post_upload" method="post" enctype="multipart/form-data" class="write_form">
+				<div class="editor">
+					<p>내용</p>
+					<div class="d_editor">
+						<textarea name="d_editor_val" class="d_editor_val" hidden></textarea>
+						<iframe src="/post" class="d_editor_frame"></iframe>
+						<button type="button" class="size"></button>
+					</div>
+				</div>
+
+				<div class="imglist">
+					<p>이미지</p>
+					<ul class="doc_img_list clearfix"></ul>
+					<input type="file" accept="image/*" name="d_editor_img[]" class="d_editor_img" data-num="0" hidden>
+				</div>
+
+				<button type="button" class="btn_submit">post</button>
+			</form>
+
+			<div class="side_menu side_menu01 ts">
+				<select class="op_font_size">
+					<option value="none">font-size</option>
+					<option value="h1">h1</option>
+					<option value="h2">h2</option>
+					<option value="h3">h3</option>
+					<option value="h4">h4</option>
+					<option value="h5">h5</option>
+					<option value="h6">h6</option>
+				</select>
+
+				<select class="op_color">
+					<option value="none">font-color</option>
+					<option value="d-color-crimson">crimson(#dc143c)</option>
+					<option value="d-color-blue">blue(#0000ff)</option>
+					<option value="d-color-grey">grey(#808080)</option>
+					<option value="d-color-orange">orange(#ffa500)</option>
+					<option value="d-color-hotpink">hotpink(#ff69b4)</option>
+					<option value="d-color-green">green(#008000)</option>
+					<option value="d-color-chocolate">chocolate(#d2691e)</option>
+					<option value="d-color-brown">brown(#a52a2a)</option>
+				</select>
+
+				<select class="op_bg">
+					<option value="none">bg-color</option>
+					<option value="d-bg-crimson">crimson(#dc143c)</option>
+					<option value="d-bg-blue">blue(#0000ff)</option>
+					<option value="d-bg-grey">grey(#808080)</option>
+					<option value="d-bg-orange">orange(#ffa500)</option>
+					<option value="d-bg-hotpink">hotpink(#ff69b4)</option>
+					<option value="d-bg-green">green(#008000)</option>
+					<option value="d-bg-chocolate">chocolate(#d2691e)</option>
+					<option value="d-bg-brown">brown(#a52a2a)</option>
+				</select>
+
+				<button class="btn btn_bold" title="두껍게">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M35.391,24.614h22.217c10.123,0,17.472,1.44,22.046,4.321c4.573,2.881,6.86,7.463,6.86,13.745,c0,4.265-1.001,7.764-3.003,10.498s-4.663,4.378-7.983,4.932v0.488c4.524,1.009,7.788,2.898,9.79,5.664,c2.002,2.768,3.003,6.445,3.003,11.035c0,6.512-2.353,11.59-7.056,15.234C76.561,94.178,70.172,96,62.1,96H35.391V24.614z M50.527,52.885h8.789c4.102,0,7.071-0.635,8.911-1.904c1.839-1.27,2.759-3.369,2.759-6.299c0-2.734-1.001-4.695-3.003-5.884,c-2.002-1.188-5.168-1.782-9.497-1.782h-7.959V52.885z M50.527,64.896V83.5h9.863c4.166,0,7.242-0.797,9.229-2.393,c1.985-1.594,2.979-4.035,2.979-7.324c0-5.924-4.232-8.887-12.695-8.887H50.527z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_italic" title="이텔릭체">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M61.66,97.674H46.963l11.572-54.59h14.697L61.66,97.674z M60.879,30.291c0-2.832,0.772-4.972,2.319-6.421,c1.546-1.448,3.735-2.173,6.567-2.173c2.376,0,4.183,0.505,5.42,1.514c1.236,1.009,1.855,2.458,1.855,4.346,c0,2.604-0.717,4.712-2.148,6.323c-1.433,1.611-3.646,2.417-6.641,2.417C63.336,36.297,60.879,34.295,60.879,30.291z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_underline" title="밑줄">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M83.438,24.197V61.15c0,4.219-0.944,7.916-2.832,11.094c-1.889,3.178-4.616,5.611-8.184,7.305,c-3.568,1.693-7.787,2.539-12.656,2.539c-7.344,0-13.047-1.881-17.109-5.645s-6.094-8.912-6.094-15.449V24.197h12.07v34.961,c0,4.4,0.885,7.631,2.656,9.688c1.771,2.057,4.7,3.086,8.789,3.086c3.958,0,6.829-1.035,8.613-3.105,c1.783-2.07,2.676-5.318,2.676-9.746V24.197H83.438z"></path>
+						<line fill="none" stroke="#333" stroke-width="8" stroke-miterlimit="10" x1="24" y1="96" x2="96" y2="96"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_strike" title="취소선">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M82.404,75.042c0,6.123-2.203,10.947-6.609,14.473c-4.407,3.525-10.538,5.288-18.393,5.288c-7.236,0-13.638-1.36-19.204-4.082V77.361c4.576,2.041,8.449,3.479,11.62,4.314c3.169,0.834,6.068,1.252,8.697,1.252c3.154,0,5.573-0.604,7.26-1.809c1.685-1.207,2.527-3,2.527-5.381c0-1.33-0.371-2.513-1.113-3.549s-1.832-2.033-3.27-2.992c-1.438-0.958-4.368-2.489-8.791-4.592c-4.144-1.949-7.252-3.819-9.323-5.613c-2.072-1.793-3.727-3.881-4.964-6.262c-1.236-2.382-1.855-5.165-1.855-8.35c0-6,2.033-10.716,6.101-14.148c4.065-3.433,9.687-5.148,16.861-5.148c3.525,0,6.889,0.417,10.089,1.252c3.201,0.835,6.548,2.011,10.043,3.525l-4.639,11.18c-3.618-1.484-6.61-2.521-8.976-3.108c-2.366-0.587-4.693-0.882-6.981-0.882c-2.722,0-4.809,0.635-6.262,1.902c-1.454,1.269-2.181,2.922-2.181,4.963c0,1.269,0.294,2.374,0.882,3.317c0.587,0.943,1.522,1.855,2.806,2.736c1.283,0.882,4.321,2.467,9.115,4.755c6.339,3.031,10.685,6.069,13.034,9.115C81.229,66.886,82.404,70.62,82.404,75.042z"></path>
+						<line fill="none" stroke="#333" stroke-width="8" stroke-miterlimit="10" x1="24" y1="60" x2="96" y2="60"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_list01" title="순서 없는 리스트">
+					<svg viewBox="0 0 120 120">
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="84" x2="96" y2="84"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="60" x2="96" y2="60"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="36" x2="96" y2="36"></line>
+						<circle fill="#333" cx="27.75" cy="60.25" r="5"></circle>
+						<circle fill="#333" cx="27.75" cy="36.25" r="5"></circle>
+						<circle fill="#333" cx="27.75" cy="84.25" r="5"></circle>
+					</svg>
+				</button>
+
+				<button class="btn btn_list02" title="순서 있는 리스트">
+					<svg viewBox="0 0 120 120">
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="84" x2="96" y2="84"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="60" x2="96" y2="60"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="46" y1="36" x2="96" y2="36"></line>
+						<path fill="#333" d="M32.262,42.668h-3.018v-8.262l0.029-1.357l0.049-1.484c-0.501,0.5-0.85,0.83-1.045,0.986l-1.641,1.318l-1.455-1.816,l4.6-3.662h2.48V42.668z"></path>
+						<path fill="#333" d="M34.781,66.668h-9.98v-2.1l3.584-3.623c1.062-1.088,1.755-1.842,2.08-2.262s0.56-0.809,0.703-1.166,c0.144-0.359,0.215-0.73,0.215-1.113c0-0.574-0.158-1-0.474-1.279c-0.315-0.281-0.737-0.42-1.265-0.42,c-0.554,0-1.091,0.127-1.611,0.381s-1.064,0.615-1.631,1.084l-1.641-1.943c0.703-0.6,1.286-1.023,1.748-1.27,c0.462-0.248,0.967-0.438,1.514-0.572c0.547-0.133,1.159-0.199,1.836-0.199c0.892,0,1.68,0.162,2.363,0.488,c0.684,0.324,1.214,0.781,1.592,1.367s0.566,1.256,0.566,2.012c0,0.656-0.115,1.273-0.347,1.85s-0.589,1.168-1.074,1.773,s-1.34,1.467-2.563,2.588l-1.836,1.729v0.137h6.221V66.668z"></path>
+						<path fill="#333" d="M34.225,79.584c0,0.891-0.271,1.65-0.811,2.275s-1.299,1.055-2.275,1.289v0.059c1.152,0.143,2.024,0.492,2.617,1.049,s0.889,1.307,0.889,2.252c0,1.373-0.498,2.443-1.494,3.207c-0.996,0.766-2.419,1.148-4.268,1.148c-1.55,0-2.923-0.258-4.121-0.771,v-2.568c0.554,0.279,1.162,0.508,1.826,0.684s1.321,0.264,1.973,0.264c0.996,0,1.731-0.17,2.207-0.508,c0.476-0.34,0.713-0.883,0.713-1.631c0-0.672-0.273-1.146-0.82-1.426c-0.547-0.281-1.419-0.42-2.617-0.42h-1.084v-2.314h1.104,c1.106,0,1.916-0.145,2.427-0.436c0.511-0.289,0.767-0.785,0.767-1.488c0-1.082-0.677-1.621-2.031-1.621,c-0.469,0-0.945,0.078-1.431,0.234s-1.023,0.426-1.616,0.811l-1.396-2.08c1.302-0.938,2.854-1.406,4.658-1.406,c1.478,0,2.645,0.299,3.501,0.898C33.797,77.682,34.225,78.516,34.225,79.584z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_align" data-type="text-align-left" title="왼쪽정렬">
+					<svg viewBox="0 0 120 120">
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="96" x2="96" y2="96"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="48" x2="79" y2="48"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="24" x2="54" y2="24"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="72" x2="54" y2="72"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_align" data-type="text-align-center" title="가운데 정렬">
+					<svg viewBox="0 0 120 120">
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="96" x2="96" y2="96"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="32" y1="48" x2="87" y2="48"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="45" y1="24" x2="75" y2="24"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="45" y1="72" x2="75" y2="72"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_align" data-type="text-align-right" title="오른쪽 정렬">
+					<svg viewBox="0 0 120 120">
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="41" y1="48" x2="96" y2="48"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="24" y1="96" x2="96" y2="96"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="66" y1="24" x2="96" y2="24"></line>
+						<line fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" x1="66" y1="72" x2="96" y2="72"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_block" title="단어박스">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M48.855,91.391H31.84V28.602h17.016v7.418H40.98v47.953h7.875V91.391z"></path>
+						<path fill="#333" d="M71.145,83.973h7.84V36.02h-7.84v-7.418H88.16v62.789H71.145V83.973z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_quote" title="인용문">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M42,37h6c0,0-4.25,14-4.25,20H51c0,0,6,0,6,6c0,4.083,0,12,0,12s0,6-6,6H39c0,0-6,0-6-6V63C33,63,33,51,42,37z"></path>
+						<path fill="#333" d="M72,37h6c0,0-4.25,14-4.25,20H81c0,0,6,0,6,6c0,4.083,0,12,0,12s0,6-6,6H69c0,0-6,0-6-6V63C63,63,63,51,72,37z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_table" title="테이블">
+					<svg viewBox="0 0 120 120">
+						<path fill="none" stroke="#333" stroke-width="4" stroke-miterlimit="10" d="M97,91.135C97,93.822,94.762,96,92,96H30,c-2.762,0-5-2.178-5-4.865v-62.27C25,26.178,27.238,24,30,24h62c2.762,0,5,2.178,5,4.865V91.135z"></path>
+						<path fill="#333" d="M97,45V29c0-2.762-2.238-5-5-5H30c-2.762,0-5,2.238-5,5v16H97z"></path>
+						<line fill="none" stroke="#333" stroke-width="2" stroke-miterlimit="10" x1="73" y1="44" x2="73" y2="98"></line>
+						<line fill="none" stroke="#333" stroke-width="2" stroke-miterlimit="10" x1="49" y1="44" x2="49" y2="98"></line>
+						<line fill="none" stroke="#333" stroke-width="2" stroke-miterlimit="10" x1="25" y1="79" x2="97" y2="79"></line>
+						<line fill="none" stroke="#333" stroke-width="2" stroke-miterlimit="10" x1="25" y1="61" x2="97" y2="61"></line>
+					</svg>
+				</button>
+
+				<button class="btn btn_code" title="코드블럭">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M37.043,69.508c0-2.039-0.768-3.598-2.303-4.676s-3.768-1.617-6.697-1.617v-8.402c2.953,0,5.191-0.516,6.715-1.547, s2.285-2.508,2.285-4.43v-0.281v-11.18c0-3.586,1.137-6.111,3.41-7.576s6.27-2.197,11.988-2.197v7.91, c-2.32,0.07-3.92,0.516-4.799,1.336s-1.318,2.027-1.318,3.621V50.98c-0.141,4.406-2.883,7.008-8.227,7.805v0.422, c5.484,0.82,8.227,3.305,8.227,7.453v0.316v10.512c0,1.594,0.434,2.801,1.301,3.621s2.473,1.266,4.816,1.336v7.945, c-5.719,0-9.715-0.732-11.988-2.197s-3.41-4.002-3.41-7.611V69.508z"></path>
+						<path fill="#333" d="M82.957,80.582c0,2.625-0.48,4.605-1.441,5.941s-2.549,2.314-4.764,2.936s-5.279,0.932-9.193,0.932v-7.945, c2.32-0.047,3.92-0.469,4.799-1.266s1.318-2.027,1.318-3.691V66.977V66.59c0-2.016,0.691-3.65,2.074-4.904s3.422-2.08,6.117-2.479, v-0.422c-5.32-0.797-8.051-3.398-8.191-7.805V40.469c0-1.641-0.434-2.859-1.301-3.656s-2.473-1.23-4.816-1.301v-7.91, c3.914,0,6.984,0.311,9.211,0.932s3.814,1.605,4.764,2.953s1.424,3.311,1.424,5.889v11.18v0.352c0,1.969,0.721,3.445,2.162,4.43, s3.721,1.477,6.838,1.477v8.402c-2.93,0-5.162,0.48-6.697,1.441s-2.303,2.578-2.303,4.852V80.582z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_view_mode" title="보기 전환">
+					<svg viewBox="0 0 120 120">
+						<g id="Add-ViewMode">
+							<line fill="none" stroke="#333" stroke-width="8" stroke-miterlimit="10" x1="51" y1="78" x2="69" y2="42"></line>
+							<polyline fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" points="42,42 24,59.834 42,78 "></polyline>
+							<polyline fill="none" stroke="#333" stroke-width="10" stroke-miterlimit="10" points="78,42 96,60 78,78 "></polyline>
+						</g>
+					</svg>
+				</button>
+
+				<button class="btn btn_addimg" title="이미지추가">
+					<svg viewBox="0 0 120 120">
+						<path fill="none" stroke="#333" stroke-width="4" stroke-miterlimit="10" d="M96,91.135C96,93.822,93.762,96,91,96H29,c-2.761,0-5-2.178-5-4.865v-62.27C24,26.178,26.239,24,29,24h62c2.762,0,5,2.178,5,4.865V91.135z"></path>
+						<path fill="#333" d="M96,91.256v-2.612l-5.5-6.819l-11.501-14.26L68.393,80.601l-3.561-5.955L45.666,42.585L26.498,74.603L24,78.786v12.47,C24,93.922,26.239,96,29,96h48.65h1.349H91C93.762,96,96,93.922,96,91.256z"></path>
+						<circle fill="#333" cx="78.575" cy="42.425" r="8.425"></circle>
+					</svg>
+				</button>
+
+				<button class="btn btn_video" title="유튜브 추가">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="m106.975,40.83731c0,0 -0.94,-6.6 -3.81,-9.5c-3.64,-3.81 -7.72,-3.83 -9.59,-4.05c-13.4,-0.97 -33.52,-0.85 -33.52,-0.85s-20.12,-0.12 -33.52,0.85c-1.87,0.22 -5.95,0.24 -9.59,4.05c-2.87,2.9 -3.81,9.5 -3.81,9.5s-0.96,7.74 -1.14,15.49l0,7.26c0.18,7.75 1.14,15.49 1.14,15.49s0.93,6.6 3.81,9.5c3.64,3.81 8.43,3.69 10.56,4.09c7.53,0.72 31.7,0.89 32.54,0.9c0.01,0 20.14,0.03 33.54,-0.94c1.87,-0.22 5.95,-0.24 9.59,-4.05c2.87,-2.9 3.81,-9.5 3.81,-9.5s0.96,-7.75 1.02,-15.49l0,-7.26c-0.07,-7.75 -1.03,-15.49 -1.03,-15.49zm-56.7,32.57l0,-27l25.74,13.5l-25.74,13.5z"></path>
+					</svg>
+				</button>
+
+				<button class="btn btn_help" title="도움말">
+					<svg viewBox="0 0 120 120">
+						<path fill="#333" d="M49.624,72.318v-3.613c0-3.125,0.667-5.842,2.002-8.154c1.334-2.311,3.775-4.768,7.324-7.373c3.418-2.441,5.672-4.426,6.763-5.957c1.09-1.529,1.636-3.238,1.636-5.127c0-2.115-0.781-3.727-2.344-4.834,c-1.563-1.105-3.744-1.66-6.543-1.66c-4.883,0-10.449,1.596-16.699,4.785L36.44,29.691c7.259-4.068,14.957-6.104,23.096-6.104,c6.705,0,12.036,1.611,15.991,4.834s5.933,7.52,5.933,12.891c0,3.582-0.814,6.674-2.441,9.277,c-1.628,2.605-4.721,5.535-9.277,8.789c-3.125,2.313-5.103,4.07-5.933,5.273c-0.83,1.205-1.245,2.783-1.245,4.736v2.93H49.624z M48.062,89.018c0-2.734,0.732-4.801,2.197-6.201c1.465-1.398,3.597-2.1,6.396-2.1c2.701,0,4.793,0.717,6.274,2.148,c1.48,1.434,2.222,3.484,2.222,6.152c0,2.572-0.749,4.6-2.246,6.08c-1.498,1.48-3.581,2.221-6.25,2.221,c-2.734,0-4.851-0.725-6.348-2.172C48.81,93.697,48.062,91.654,48.062,89.018z"></path>
+					</svg>
+				</button>
+			</div>
+
+			<div class="side_menu side_menu02 ts">
+				<div class="field op_img_pc" data-tag="img">
+					<p>Img size</p>
+					<select class="op_width_pc">
+						<option value="none" selected>100%</option>
+						<option value="1200">1200px</option>
+						<option value="600">600px</option>
+						<option value="300">300px</option>
+					</select>
+				</div>
+
+				<!-- <div class="field op_img" data-tag="img">
+					<p>Mobile Img size</p>
+					<select class="op_width">
+						<option value="none" selected>100%</option>
+						<option value="75">75%</option>
+						<option value="50">50%</option>
+						<option value="25">25%</option>
+					</select>
+				</div> -->
+
+				<div class="field op_link act" data-tag="paragraph,ol,ul,table,link">
+					<p>Link</p>
+					<input type="text">
+					<button class="btn01 btn_add">Add</button>
+					<button class="btn01 btn_del">Delete</button>
+				</div>
+
+				<div class="field op_table_type" data-tag="table">
+					<p>Table type</p>
+					<button class="btn01 btn_th">Th</button>
+					<button class="btn01 btn_td">Td</button>
+				</div>
+
+				<div class="field op_table" data-tag="table">
+					<p>Tabel col</p>
+					<input type="number" min="1" max="50" class="op_col">
+					<p>Tabel row</p>
+					<input type="number" min="1" max="50" class="op_row">
+					<button class="btn02 btn_rewrite">Rewrite</button>
+				</div>
+
+				<div class="field op_pre" data-tag="pre">
+					<p>Language</p>
+					<select class="op_pre_lang">
+						<option value="nohighlight">text</option>
+						<option value="html">html</option>
+						<option value="css">css</option>
+						<option value="javascript">javascript</option>
+						<option value="json">json</option>
+						<option value="php">php</option>
+						<option value="java">java</option>
+						<option value="xml">xml</option>
+					</select>
+
+					<p>Theme</p>
+					<select class="op_pre_theme">
+						<option value="default">default</option>
+						<option value="vs2015">vs2015</option>
+						<option value="monokai">monokai</option>
+						<option value="androidstudio">androidstudio</option>
+					</select>
+				</div>
+
+				<div class="field op_ol_type" data-tag="ol">
+					<p>List type</p>
+					<select>
+						<option value="A">A</option>
+						<option value="a">a</option>
+						<option value="I">I</option>
+						<option value="i">i</option>
+						<option value="1">1</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="pop_bg"></div>
+			<div class="pop_help">
+				<h2>에디터 사용법</h2>
+				<ul>
+					<li>기본적으로 포스트는 AMP(모바일 최적화 페이지) 라서 코드상의 문제가 없어야합니다.<br>
+						검수는 <a href="https://search.google.com/test/amp" target="_blank">AMP Test</a> 에서하며 문제가 생길시 관리자에게 헬프를 요청하세요.
+					</li>
+					<li>기본적인 효과&#47;추가는 왼쪽 컨트롤창 에서 가능합니다.</li>
+					<li>속성에 관한 것은 오른쪽 컨트롤창 에서 가능합니다.</li>
+					<li>폰트 컬러,사이즈,이미지 사이즈 의 추가는 관리자에게 문의하세요.</li>
+					<li>되도록 에디터 내에서 복사는 조심히 사용하셔야 합니다.<br>
+					단락복사 X &#47; 문장 복사 O</li>
+					<li>오른쪽 컨트롤창 에서 가끔 모든 속성이 나오는것은 정상입니다.</li>
+					<li>되도록 테이블의 col은 4개 이하가 모바일에서 좋습니다.</li>
+					<li>여러줄 드래그 속성 변경도 불가능합니다.</li>
+					<li>이미지는 가로 3000px이하로 사용하시기 바랍니다.</li>
+					<li>일러스트 떄문에 한장당 2mb로 제한중입니다. 되도록 일러스트를 제외한 이미지는 가로 1200px 용량 1mb 미만으로 사용하시기 바랍니다.</li>
+				</ul>
+			</div>
+
+			<div class="pop_video">
+				<h2>유튜브 삽입</h2>
+				<input type="url">
+				<button>삽입</button>
+			</div>
+		</div>
+	</section>
+</main>
+
+</body>
 </html>
