@@ -2,9 +2,14 @@
 <html lang="ko">
 <head>
 	<meta charset="utf-8">
-	<link rel="stylesheet" href="/common/css/common.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata:400,700">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans:400,600,700">
+	<link rel="stylesheet" href="/common/css/write.css">
 
 	<title>AMP - Editor</title>
+
+	<script src="/common/js/write.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -15,12 +20,11 @@
 		<h2 hidden>본문 영역</h2>
 
 		<div class="write_area">
-			<form action="/post/post_upload" method="post" enctype="multipart/form-data" class="write_form">
+			<form action="#" method="post" enctype="multipart/form-data" class="write_form">
 				<div class="editor">
-					<p>내용</p>
 					<div class="d_editor">
 						<textarea name="d_editor_val" class="d_editor_val" hidden></textarea>
-						<iframe src="/post" class="d_editor_frame"></iframe>
+						<iframe src="/textarea.html" class="d_editor_frame"></iframe>
 						<button type="button" class="size"></button>
 					</div>
 				</div>
@@ -311,6 +315,5 @@
 		</div>
 	</section>
 </main>
-
 </body>
 </html>

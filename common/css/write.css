@@ -1,0 +1,70 @@
+@charset "utf-8";
+
+body,h1,h2,h3,h4,h5,h6,p,blockquote,pre,dl,dd,ol,ul,fieldset,legend,figure,menu{margin:0;padding:0;border:0}
+table,th,td{border-spacing:0;border-collapse:collapse}
+ol,ul,li{list-style:none}
+h1,h2,h3,h4,h5,h6{font-size:1em;font-weight:normal}
+body,input,textarea,keygen,select,button{color:#333;font:normal 12px/1.2 'Open Sans','Noto Sans',sans-serif}
+input,textarea,select,button{margin:0;padding:0;border-radius:0;color:#333;outline:0;vertical-align:middle}
+a:link,a:visited,a:hover,a:active{text-decoration:none}
+a,button,input[type='submit'],input[type='button'],input[type='reset']{border:0;background:transparent;cursor:pointer}
+img{border:0;vertical-align:top}
+
+/* global */
+.ellipsis{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;-o-text-overflow:ellipsis}
+.blind{color:transparent;font-size:0}
+.clearfix::after{display:block;content:'';clear:both}
+.ts,.ts::after,.ts::before{-o-transition:all 0.5s ease;-moz-transition:all 0.5s ease;-webkit-transition:all 0.5s ease;transition:all 0.5s ease}
+
+.write_area{position:relative;width:960px;margin:0 auto}
+.write_area .write_form{padding:20px;background:#fff;border-radius:2px}
+.write_area .side_menu{position:absolute;top:0;width:100px;padding:10px;background:#fff;border-radius:2px}
+.write_area .side_menu01{left:-130px;font-size:0}
+.write_area .side_menu01 select{width:100%;height:25px;margin-bottom:5px;padding:0 5px;border:1px solid #ccc;border-radius:2px;box-sizing:border-box}
+.write_area .side_menu01 .btn{display:inline-block;width:30px;height:30px;margin:0 5px 5px 0;border:1px solid #ccc;border-radius:2px;box-sizing:border-box;vertical-align:top;cursor:pointer}
+.write_area .side_menu01 .btn:nth-child(3n){margin:0 0 5px}
+.write_area .side_menu02{right:-130px}
+.write_area .side_menu02 .field{display:none;margin-bottom:10px;font-size:0}
+.write_area .side_menu02 .field.act{display:block}
+.write_area .side_menu02 .field p{margin-bottom:5px;font-size:12px}
+.write_area .side_menu02 .field select,
+.write_area .side_menu02 .field input{width:100%;height:25px;margin-bottom:5px;padding:0 5px;border:1px solid #ccc;border-radius:2px;box-sizing:border-box}
+.write_area .side_menu02 .field .btn01{width:45px;height:20px;border:1px solid #ccc;border-radius:2px;box-sizing:border-box}
+.write_area .side_menu02 .field .btn01:nth-of-type(1){margin-right:10px}
+.write_area .side_menu02 .field .btn02{width:100%;height:20px;border:1px solid #ccc;border-radius:2px;box-sizing:border-box}
+.write_area .write_form .field{margin-bottom:30px}
+.write_area .write_form .field:last-of-type{margin-bottom:0}
+.write_area .write_form .field p{margin-bottom:5px;font-size:14px}
+.write_area .write_form .field p span{color:#999;font-size:12px}
+.write_area .write_form .field input{width:100%;height:35px;padding:0 10px;background:transparent;border:0;border-bottom:2px solid #ccc;font-size:14px;box-sizing:border-box;line-height:35px}
+.write_area .write_form .field input:focus{border-bottom-color:#38b7ea}
+.write_area .write_form .field select{width:300px;height:35px;padding:0 10px;background:transparent;border:1px solid #ccc;font-size:14px}
+.write_area .write_form .field .img{display:block;width:200px;height:100px;border:1px solid #ccc;border-radius:2px;cursor:pointer;overflow:hidden}
+.write_area .write_form .field .img img{width:100%;min-height:100%}
+.write_area .editor{margin-bottom:30px}
+.write_area .editor p{margin-bottom:5px;font-size:14px}
+.write_area .editor .d_editor{position:relative;width:100%;height:600px;border:1px solid #ccc;border-radius:2px;overflow:hidden}
+.write_area .editor .d_editor .d_editor_val{width:100%;height:100%;padding:10px;border:0;box-sizing:border-box;resize:none}
+.write_area .editor .d_editor .d_editor_frame{width:100%;height:100%;border:0}
+.write_area .editor .d_editor .size{position:absolute;bottom:0;left:0;width:100%;height:10px;background:#ddd;cursor:row-resize}
+.write_area .editor .d_editor .size::before{display:block;content:'';position:absolute;top:3px;left:50%;width:20px;height:1px;margin-left:-10px;background:#999}
+.write_area .editor .d_editor .size::after{display:block;content:'';position:absolute;bottom:3px;left:50%;width:20px;height:1px;margin-left:-10px;background:#999}
+.write_area .imglist{margin-bottom:30px}
+.write_area .imglist p{margin-bottom:5px;font-size:14px}
+.write_area .imglist li{float:left;width:100px;margin-right:5px;text-align:center}
+.write_area .imglist .img{width:100%;height:100px;margin-bottom:5px;border:1px solid #ccc;border-radius:2px;overflow:hidden}
+.write_area .imglist .img img{width:100%;min-height:100%}
+.write_area .btn_submit{display:block;width:120px;height:40px;margin:0 auto;background:#38b7ea;color:#fff;border-radius:5px;font-size:18px;text-align:center;line-height:40px}
+
+.pop_bg{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100}
+.pop_help{display:none;position:fixed;top:50%;left:50%;width:400px;background:#fff;border-radius:5px;transform:translate(-50%,-50%);overflow:hidden;z-index:110}
+.pop_help h2{height:30px;padding:0 10px;background:#38b7ea;color:#fff;font-size:14px;font-weight:bold;line-height:30px}
+.pop_help ul{padding:10px}
+.pop_help li:not(:last-child){margin-bottom:10px}
+.pop_video{display:none;position:fixed;top:50%;left:50%;width:300px;background:#fff;border-radius:5px;transform:translate(-50%,-50%);overflow:hidden;z-index:110}
+.pop_video h2{height:30px;padding:0 10px;background:#38b7ea;color:#fff;font-size:14px;font-weight:bold;line-height:30px}
+.pop_video input{display:block;width:calc(100% - 20px);height:20px;margin:10px auto;border:1px solid #ccc}
+.pop_video button{display:block;width:40px;height:25px;margin:0 auto 10px;background:#38b7ea;color:#fff;border-radius:5px}
+.pop_bg.act,
+.pop_help.act,
+.pop_video.act{display:block}
