@@ -491,7 +491,7 @@ window.onload = () => {
 			doc.querySelectorAll('p').forEach(function (p) {
 				let text = p.textContent,
 					img = p.querySelector('img');
-				if(text == '' && img == 'undefined'){
+				if(text == '' || img == 'undefined'){
 					p.innerHTML = '';
 				}
 			});
